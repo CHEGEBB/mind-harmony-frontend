@@ -20,8 +20,32 @@ import ThemeIcon from "../images/theme.svg";
 import "../sass/Chats.scss";
 import io from 'socket.io-client';
 
+interface User {
+  id: number;
+  name: string;
+  avatar: any;
+  online: boolean;
+  lastMessage: string;
+  typing: boolean;
+}
+
+interface Group {
+  id: number;
+  name: string;
+  members: number[];
+  lastMessage: string;
+  typing: number[];
+}
+
+interface Message {
+  id: number;
+  sender: string | number;
+  text: string;
+  timestamp: Date;
+}
+
 export default function ChatApp() {
-  const [users, setUsers] = useState([
+  const [users, setUsers] = useState<User[]>([
     {
       id: 1,
       name: "Alex (Anxiety)",
@@ -104,7 +128,7 @@ export default function ChatApp() {
     }
   ]);
 
-  const [groups, setGroups] = useState([
+  const [groups, setGroups] = useState<Group[]>([
     {
       id: 1,
       name: "Anxiety Support",
@@ -135,23 +159,8 @@ export default function ChatApp() {
     }
   ]);
 
-  // const socket= io('https://groupchat-zg7d.onrender.com/',{
-  //   auth:{
-  //     token:"667c164b7b527576b0d0dccc1c37b587713b5853"
-  //   }
-  // } )
-  
-  // fetch('https://groupchat-zg7d.onrender.com/', {
-  //   method: 'GET',
-  //   headers: {
-  //     'Authorization': `Token 667c164b7b527576b0d0dccc1c37b587713b5853`
-  //   }
-  // })
-  // .then (response => response.json())
-  // .then (data => console.log(data))
-
-  const [selectedChat, setSelectedChat] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [selectedChat, setSelectedChat] = useState<User | Group | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState("");
   const [error, setError] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -173,7 +182,7 @@ export default function ChatApp() {
       setError("Please enter a message");
       return;
     }
-    const newMessage = {
+    const newMessage: Message = {
       id: messages.length + 1,
       sender: "currentUser",
       text: userInput,
@@ -189,15 +198,15 @@ export default function ChatApp() {
     setIsTyping(true);
   }
 
-  function HandleChatSelect(chat) {
+  function HandleChatSelect(chat: User | Group) {
     setSelectedChat(chat);
-    const [messages, setMessages] = useState<{ id: number; sender: number | string; text: string; timestamp: Date }[]>([]);
+    setMessages([]);
   }
 
   function handleCreateGroup() {
     const groupName = prompt("Enter support group name:");
     if (groupName) {
-      const newGroup = {
+      const newGroup: Group = {
         id: groups.length + 1,
         name: groupName,
         members: [1],
@@ -208,11 +217,11 @@ export default function ChatApp() {
     }
   }
 
-  function handleDeleteGroup(groupId) {
+  function handleDeleteGroup(groupId: number) {
     setGroups(groups.filter((group) => group.id !== groupId));
   }
 
-  function handleAddUserToGroup(groupId) {
+  function handleAddUserToGroup(groupId: number) {
     const userId = prompt("Enter user ID to add to the support group:");
     if (userId) {
       setGroups(
@@ -349,7 +358,7 @@ export default function ChatApp() {
                   className={`chat-item ${
                     selectedChat?.id === user.id ? "active" : ""
                   }`}
-                  onClick={() => handleChatSelect(user)}
+                  onClick={() => HandleChatSelect(user)}
                 >
                   <div className="chat-profile">
                     <Image
@@ -391,13 +400,13 @@ export default function ChatApp() {
               >
                 <div
                   className="group-icon"
-                  onClick={() => handleChatSelect(group)}
+                  onClick={() => HandleChatSelect(group)}
                 >
                   <div className="group-members-avatars">
                     {group.members.slice(0, 3).map((memberId) => (
                       <Image
                         key={memberId}
-                        src={users.find((u) => u.id === memberId).avatar}
+                        src={users.find((u) => u.id === memberId)!.avatar}
                         alt={`Member ${memberId}`}
                         width={20}
                         height={20}
@@ -411,7 +420,7 @@ export default function ChatApp() {
                 </div>
                 <div
                   className="group-info"
-                  onClick={() => handleChatSelect(group)}
+                  onClick={() => HandleChatSelect(group)}
                 >
                   <div className="group-name">{group.name}</div>
                   <div className="group-members">
@@ -421,7 +430,7 @@ export default function ChatApp() {
                   {group.typing.length > 0 && (
                     <div className="typing-indicator">
                       {group.typing
-                        .map((id) => users.find((u) => u.id === id).name)
+                        .map((id) => users.find((u) => u.id === id)!.name)
                         .join(", ")}{" "}
                       {group.typing.length === 1 ? "is" : "are"} typing...
                     </div>
@@ -451,7 +460,7 @@ export default function ChatApp() {
               <div
                 key={user.id}
                 className={`user-item ${user.online ? "online" : "offline"}`}
-                onClick={() => handleChatSelect(user)}
+                onClick={() => HandleChatSelect(user)}
               >
                 <div className="user-profile">
                   <Image
@@ -483,12 +492,12 @@ export default function ChatApp() {
           {selectedChat && (
             <>
               <div className="chat-profile">
-                {"members" in selectedChat ? (
+                {'members' in selectedChat ? (
                   <div className="group-members-avatars">
                     {selectedChat.members.slice(0, 3).map((memberId) => (
                       <Image
                         key={memberId}
-                        src={users.find((u) => u.id === memberId).avatar}
+                        src={users.find((u) => u.id === memberId)!.avatar}
                         alt={`Member ${memberId}`}
                         width={20}
                         height={20}
@@ -511,7 +520,7 @@ export default function ChatApp() {
               </div>
               <div className="chat-info">
                 <h2>{selectedChat.name}</h2>
-                {"members" in selectedChat ? (
+                {'members' in selectedChat ? (
                   <div className="group-members">
                     {selectedChat.members.length} members
                   </div>
@@ -536,12 +545,12 @@ export default function ChatApp() {
                 message.sender === "currentUser" ? "user" : "other"
               }`}
             >
-              {"members" in selectedChat &&
+              {'members' in selectedChat &&
                 message.sender !== "currentUser" && (
                   <div className="message-avatar">
                     {users.find((u) => u.id === message.sender)?.avatar && (
                       <Image
-                        src={users.find((u) => u.id === message.sender).avatar}
+                        src={users.find((u) => u.id === message.sender)!.avatar}
                         alt={`User ${message.sender}`}
                         width={30}
                         height={30}
@@ -553,10 +562,12 @@ export default function ChatApp() {
               <div
                 className="message-content"
                 style={{
-                  backgroundColor: `hsl(${message.sender * 267},53%, 58%)`
+                  backgroundColor: `hsl(${
+                    typeof message.sender === 'number' ? message.sender * 267 : 0
+                  },53%, 58%)`
                 }}
               >
-                {"members" in selectedChat &&
+                {'members' in selectedChat &&
                   message.sender !== "currentUser" && (
                     <div className="message-sender">
                       {users.find((u) => u.id === message.sender)?.name}
