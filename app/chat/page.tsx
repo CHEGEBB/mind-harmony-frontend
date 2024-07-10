@@ -189,7 +189,7 @@ export default function ChatApp() {
     setIsTyping(true);
   }
 
-  function handleChatSelect(chat) {
+  function HandleChatSelect(chat) {
     setSelectedChat(chat);
     const [messages, setMessages] = useState<{ id: number; sender: number | string; text: string; timestamp: Date }[]>([]);
   }
