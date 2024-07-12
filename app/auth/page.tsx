@@ -28,12 +28,8 @@ export default function TabsDemo() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    // Check if user is logged in
-    const token = localStorage.getItem('token');
-    if (token) {
-      router.push("/home");
-    }
-  }, [router]);
+    checkTokenValidity();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,11 +65,30 @@ export default function TabsDemo() {
       );
 
       console.log("Sign-in successful:", response.data);
-      localStorage.setItem('token', response.data.token); // Save token
+      localStorage.setItem('token', response.data.token); 
       router.push("/home");
     } catch (error: any) {
       console.error("Sign-in failed:", error);
       setErrorMessage(error.response?.data?.message || "An error occurred while signing in.");
+    }
+  };
+
+  const checkTokenValidity = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const response = await axios.post(
+          "https://mindharmony-be9e466ec301.herokuapp.com/user/validate-token/",
+          {},
+          { headers: { "Authorization": `Bearer ${token}` } }
+        );
+        if (response.data.valid) {
+          router.push("/home");
+        }
+      } catch (error) {
+        console.error("Token validation failed:", error);
+        localStorage.removeItem('token'); // Remove invalid token
+      }
     }
   };
 
@@ -85,7 +100,7 @@ export default function TabsDemo() {
           {successMessage}
         </div>
       )}
-      <Tabs defaultValue="sign-up">
+      <Tabs defaultValue="sign-up" onValueChange={checkTokenValidity}>
         <TabsList className="grid w-full grid-cols-2 drop-shadow-lg">
           <TabsTrigger value="sign-up">Sign up</TabsTrigger>
           <TabsTrigger value="login">Login</TabsTrigger>
