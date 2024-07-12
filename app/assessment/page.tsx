@@ -1,6 +1,4 @@
 "use client";
-
-// "use client";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -120,7 +118,7 @@ const AssessmentForm: React.FC = () => {
   const currentQ = questions[currentQuestion];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-200">
+    <div className="flex items-center justify-center min-h-screen bg-slate-200">
       <Form {...form}>
         <form onSubmit={(e) => e.preventDefault()}>
           <Card className="shadow-md">
