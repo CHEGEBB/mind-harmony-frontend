@@ -4,7 +4,6 @@ $text-color: #e0e0e0;
 $secondary-color: #2c3e50;
 $accent-color: #3498db;
 $border-color: #34495e;
-
 .main-container {
   background-color: $background-color;
   color: $text-color;
@@ -17,7 +16,7 @@ $border-color: #34495e;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -27,6 +26,8 @@ $border-color: #34495e;
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
+  margin-top: 40px;
+  max-height: 1000px;
 
   &:hover {
     transform: translateY(-5px);
@@ -52,8 +53,9 @@ $border-color: #34495e;
       margin-bottom: 1rem;
 
       .avatar {
-        width: 150px;
-        height: 150px;
+        width: 100px;
+        height: 100px;
+        margin-top: 60px;
         border-radius: 50%;
         border: 5px solid $background-color;
         object-fit: cover;
@@ -67,6 +69,7 @@ $border-color: #34495e;
 
     .personName {
       margin-bottom: 0.5rem;
+      margin-top: 2rem;
 
       h1 {
         font-size: 2rem;
@@ -103,15 +106,18 @@ $border-color: #34495e;
     padding: 2rem;
 
     .details {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1rem;
+     display: flexbox;
+     flex-direction: column;
+     gap: 20px;
 
       .detail {
         background-color: rgba($accent-color, 0.1);
         padding: 1rem;
         border-radius: 10px;
         transition: background-color 0.3s ease;
+        margin: 5px;
+        border-bottom: 2px solid $accent-color;
+        height: 80px;
 
         &:hover {
           background-color: rgba($accent-color, 0.2);
@@ -134,6 +140,8 @@ $border-color: #34495e;
 .otherDetails {
   display: grid;
   gap: 2rem;
+  margin-top: 40px;
+  width: 500px;
 }
 
 .mentalHealthStats, .therapists {

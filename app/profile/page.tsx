@@ -28,6 +28,7 @@ const MentalHealthProfile: React.FC = () => {
   ];
 
   return (
+    <main className='bg-slate-700 profile-container max-[width:1920]:'>
     <div className=" max-w-screen-2xl main-container">
       <div className={styles.profileContainer}>
         <div className={styles.personalDetails}>
@@ -199,6 +200,7 @@ const MentalHealthProfile: React.FC = () => {
         </div>
       </div>
     </div>
+    </main>
   );
 };
 
