@@ -96,7 +96,7 @@ export default function Sidenav(){
             <div className="nav-item">
         <Link href="chat">Live Chat</Link>
         </div>
-        <Link href=
+        <Link href='virtual-assistant'>Chat</Link>
         </div>
         </div>
         </div>
