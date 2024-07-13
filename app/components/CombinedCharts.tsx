@@ -37,7 +37,7 @@ const CombinedCharts: React.FC = () => {
         <div className={styles.container}>
             <div className={styles.chartWrapper}>
                 <h2>Mood Tracking</h2>
-                <BarChart width={400} height={300} data={moodData}>
+                <BarChart className="bar1" width={400} height={300} data={moodData}>
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />

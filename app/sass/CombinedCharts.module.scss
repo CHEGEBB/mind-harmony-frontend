@@ -27,10 +27,13 @@ $font-ropa : 'Ropa Sans', sans-serif;
     margin: 20px auto;
     gap: 20px;
     padding: 20px;
+    .bar1{
+        width: 200px;
+    }
 }
 
 .chartWrapper {
-    width: 450px;
+    width: 350px;
     height: 400px;
     margin-bottom: 20px;
     border: 1px solid $col-18;

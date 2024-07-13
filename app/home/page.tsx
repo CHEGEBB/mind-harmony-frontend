@@ -41,7 +41,7 @@ const HomePage = () => {
               <iframe src="https://lottie.host/embed/78f7a603-9cc6-4213-8698-a595c5ca7005/fENvQNEzhn.json"></iframe>
             </div>
             <div className="message">
-              <h1>Good {greeting} John Doe!</h1>
+              <h1>Good {greeting} Sarah Johnson!</h1>
               <p>Welcome to your dashboard. Here, you can manage your appointments, view your notifications, and keep track of your progress.</p>
             </div>
           </div>
