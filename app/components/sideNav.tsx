@@ -96,6 +96,7 @@ export default function Sidenav(){
             <div className="nav-item">
         <Link href="chat">Live Chat</Link>
         </div>
+        <Link
         </div>
         </div>
         </div>
